@@ -70,9 +70,9 @@
             <span class="py-2 px-1 font-medium text-gray-600">订单管理</span>
         </nav>
 
-        <!-- 改为：登录 -->
+        <!-- 改为：登录 - 使用绝对路径 -->
         <div class="hidden md:flex">
-            <a href="login.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+            <a href="/xieqiao-agricultural/login.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
                 登录
             </a>
         </div>
@@ -87,8 +87,8 @@
             <span class="py-2 text-gray-600">商品管理</span>
             <span class="py-2 text-gray-600">农户管理</span>
             <span class="py-2 text-gray-600">订单管理</span>
-            <!-- 改为：登录 -->
-            <a href="login.html" class="py-2 text-primary text-center border-t">登录</a>
+            <!-- 改为：登录 - 使用绝对路径 -->
+            <a href="/xieqiao-agricultural/login.html" class="py-2 text-primary text-center border-t">登录</a>
         </div>
     </div>
 </header>
@@ -135,7 +135,7 @@
                 <p class="text-gray-500">智能化系统管理，库存、订单、农户信息一键掌控</p>
             </div>
             <div class="p-6 card-shadow rounded-lg text-center hover-float animate-slide-up animate-delay-4">
-                <i class="fa-solid-handshake-angle text-primary text-4xl mb-4"></i>
+                <i class="fa-solid fa-handshake-angle text-primary text-4xl mb-4"></i>
                 <h4 class="font-bold text-xl mb-2">一站式服务</h4>
                 <p class="text-gray-500">产供销一体化服务，简化流程，提升农业产业效率</p>
             </div>
@@ -233,6 +233,7 @@
         </div>
     </div>
 </section>
+
 <!-- 底部 -->
 <footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-8 animate-fade-in">
     <div class="container mx-auto px-4 text-center text-gray-400">
@@ -240,6 +241,7 @@
         <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
     </div>
 </footer>
+
 <script>
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
