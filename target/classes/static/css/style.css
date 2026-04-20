@@ -1,0 +1,23 @@
+/* 全局样式重置 */
+*{margin:0;padding:0;box-sizing:border-box;font-family:微软雅黑;}
+/* 页面基础样式 */
+body{padding:30px;background:#f6f6f6;}
+/* 容器样式（所有页面通用） */
+.container{width:900px;margin:0 auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 0 5px #ccc;}
+/* 标题样式 */
+h1{margin-bottom:20px;color:#333;}
+/* 导航菜单样式 */
+.menu{margin:20px 0;}
+.menu a{margin-right:15px;text-decoration:none;color:#007bff;}
+.menu a:hover{color:#0056b3;text-decoration:underline;}
+/* 登录框样式（备用，login.html已用Bootstrap自定义） */
+.login-box{width:400px;margin:60px auto;background:#fff;padding:30px;border-radius:8px;box-shadow:0 0 5px #ccc;}
+/* 表单元素样式 */
+input{width:100%;margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:4px;}
+button{padding:10px 20px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;}
+button:hover{background:#0056b3;}
+/* 列表样式（商品/农户/订单列表通用） */
+ul{list-style:none;margin-top:20px;}
+li{padding:12px;border-bottom:1px solid #eee;}
+li:last-child{border-bottom:none;}
+li:hover{background:#f8f9fa;}

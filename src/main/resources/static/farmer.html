@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农户管理 - 斜桥农产品供销系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script> tailwind.config = { theme: { extend: { colors: { primary: '#2E7D32' } } } } </script>
+</head>
+<body class="bg-neutral font-sans">
+<header class="sticky top-0 bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2"><i class="fa-solid fa-leaf text-primary text-2xl"></i><h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1></div>
+        <nav class="hidden md:flex items-center gap-6">
+            <a href="dashboard.html" class="text-gray-600 hover:text-primary">控制台</a>
+            <a href="product.html" class="text-gray-600 hover:text-primary">商品管理</a>
+            <a href="farmer.html" class="text-primary border-b-2 border-primary">农户管理</a>
+            <a href="order.html" class="text-gray-600 hover:text-primary">订单管理</a>
+        </nav>
+        <a href="index.html" class="px-4 py-2 bg-primary text-white rounded">退出登录</a>
+    </div>
+</header>
+
+<section class="py-8"><div class="container mx-auto px-4">
+    <div class="bg-white p-6 rounded-xl shadow">
+        <div class="flex justify-between mb-4"><h2 class="font-bold text-xl">农户管理</h2>
+            <button onclick="addFarmer()" class="bg-primary text-white px-4 py-2 rounded">新增农户</button></div>
+        <table class="w-full border-t"><thead><tr class="bg-gray-50"><th class="p-2 text-left">ID</th><th class="p-2 text-left">姓名</th><th class="p-2 text-left">电话</th><th class="p-2 text-left">地址</th><th class="p-2 text-left">操作</th></tr></thead>
+            <tbody><tr><td>1001</td><td>张三</td><td>13800138000</td><td>斜桥镇</td>
+                <td><button onclick="editFarmer(1001)" class="text-blue-600 mr-2">编辑</button><button onclick="delFarmer(1001)" class="text-red-600">删除</button></td></tr></tbody></table>
+    </div>
+</div></section>
+
+<div id="fModal" class="fixed inset-0 bg-black/40 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl w-full max-w-lg">
+        <h3 id="fTitle" class="mb-3 font-bold">新增农户</h3>
+        <form id="fForm"><input type="hidden" id="fid">
+            <div class="mb-2"><input placeholder="姓名" id="fname" class="w-full border p-2 rounded"></div>
+            <div class="mb-2"><input placeholder="电话" id="ftel" class="w-full border p-2 rounded"></div>
+            <div class="mb-2"><input placeholder="地址" id="faddr" class="w-full border p-2 rounded"></div>
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" onclick="closeFModal()" class="border px-3 py-1 rounded">取消</button>
+                <button type="submit" class="bg-primary text-white px-3 py-1 rounded">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 底部 -->
+<footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-8 animate-fade-in">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
+        <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
+    </div>
+</footer>
+<script>
+    function addFarmer(){ document.getElementById("fTitle").innerText="新增农户"; document.getElementById("fForm").reset(); document.getElementById("fModal").style.display="flex"; }
+    function editFarmer(id){ document.getElementById("fTitle").innerText="编辑农户"; document.getElementById("fid").value=id; document.getElementById("fname").value="张三"; document.getElementById("ftel").value="13800138000"; document.getElementById("faddr").value="斜桥镇"; document.getElementById("fModal").style.display="flex"; }
+    function closeFModal(){ document.getElementById("fModal").style.display="none"; }
+    function delFarmer(id){ if(confirm("确定删除？"))alert("删除成功！"); }
+    document.getElementById("fForm").addEventListener("submit",e=>{e.preventDefault();alert("保存成功！");closeFModal();})
+</script>
+</body>
+</html>

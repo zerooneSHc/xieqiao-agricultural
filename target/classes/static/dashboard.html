@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>控制台 - 斜桥农产品供销系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',
+                        secondary: '#81C784',
+                        neutral: '#F5F5F5',
+                    },
+                    fontFamily: {
+                        sans: ['PingFang SC','Helvetica Neue','Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+            .animate-fade-in { animation: fadeIn 0.8s ease forwards; }
+            .animate-slide-up { animation: slideUp 0.7s ease forwards; }
+            .animate-delay-1 { animation-delay: 0.1s; }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-neutral font-sans text-gray-800">
+<!-- 顶部导航 -->
+<header class="sticky top-0 z-50 bg-white shadow-sm animate-fade-in">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+            <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+            <a href="dashboard.html" class="py-2 px-1 font-medium text-primary border-b-2 border-primary">控制台</a>
+            <a href="product.html" class="py-2 px-1 font-medium text-gray-600 hover:text-primary">商品管理</a>
+            <a href="farmer.html" class="py-2 px-1 font-medium text-gray-600 hover:text-primary">农户管理</a>
+            <a href="order.html" class="py-2 px-1 font-medium text-gray-600 hover:text-primary">订单管理</a>
+        </nav>
+        <div class="hidden md:flex items-center gap-3">
+            <span class="text-gray-600">管理员</span>
+            <a href="index.html" class="px-4 py-2 bg-primary/90 text-white rounded-md hover:bg-primary transition-colors">退出登录</a>
+        </div>
+    </div>
+</header>
+
+<!-- 控制台内容 -->
+<section class="py-12 animate-fade-in">
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-xl card-shadow p-8 text-center mb-10">
+            <i class="fa-solid fa-leaf text-primary text-5xl mb-4"></i>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">欢迎登录管理后台</h2>
+            <p class="text-gray-600 text-lg">请点击下方模块进入对应管理功能</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="product.html" class="bg-white rounded-xl p-8 text-center card-shadow hover:shadow-lg transition-all hover:scale-105 animate-slide-up animate-delay-1">
+                <i class="fa-solid fa-boxes-stacked text-primary text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl">商品管理</h3>
+                <p class="text-gray-500 mt-2">管理农产品信息、库存、价格</p>
+            </a>
+            <a href="farmer.html" class="bg-white rounded-xl p-8 text-center card-shadow hover:shadow-lg transition-all hover:scale-105 animate-slide-up animate-delay-2">
+                <i class="fa-solid fa-users text-primary text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl">农户管理</h3>
+                <p class="text-gray-500 mt-2">维护农户信息、合作关系</p>
+            </a>
+            <a href="order.html" class="bg-white rounded-xl p-8 text-center card-shadow hover:shadow-lg transition-all hover:scale-105 animate-slide-up animate-delay-3">
+                <i class="fa-solid fa-receipt text-primary text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl">订单管理</h3>
+                <p class="text-gray-500 mt-2">订单状态跟踪、交易管理</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 底部 -->
+<footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-8 animate-fade-in">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
+        <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
+    </div>
+</footer>
+</body>
+</html>

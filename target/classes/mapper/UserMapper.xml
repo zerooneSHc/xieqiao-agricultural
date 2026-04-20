@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须与Mapper接口全类名一致 -->
+<mapper namespace="com.xieqiao.agricultural.dao.UserMapper">
+    <!--
+        select标签：绑定接口的selectByUsername方法
+        - id：与接口方法名一致
+        - parameterType：入参类型（使用全类名避免别名依赖）
+        - resultType：返回值类型（User实体全类名，确保字段映射）
+     -->
+    <select id="selectByUsername"
+            parameterType="java.lang.String"
+            resultType="com.xieqiao.agricultural.entity.User">
+        SELECT id, username, password, phone, role, status, create_time
+        FROM user
+        WHERE username = #{username}
+    </select>
+</mapper>

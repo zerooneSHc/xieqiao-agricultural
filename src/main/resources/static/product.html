@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品管理 - 斜桥农产品供销系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { primary: '#2E7D32' } } }
+        }
+    </script>
+</head>
+<body class="bg-neutral font-sans text-gray-800">
+<header class="sticky top-0 bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+            <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+            <a href="dashboard.html" class="py-2 px-1 text-gray-600 hover:text-primary">控制台</a>
+            <a href="product.html" class="py-2 px-1 text-primary border-b-2 border-primary">商品管理</a>
+            <a href="farmer.html" class="py-2 px-1 text-gray-600 hover:text-primary">农户管理</a>
+            <a href="order.html" class="py-2 px-1 text-gray-600 hover:text-primary">订单管理</a>
+        </nav>
+        <a href="index.html" class="px-4 py-2 bg-primary/90 text-white rounded-md hover:bg-primary transition-colors">退出登录</a>
+    </div>
+</header>
+
+<section class="py-8">
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <h2 class="text-xl font-bold">商品管理列表</h2>
+                <div class="flex gap-3">
+                    <input id="searchInput" type="text" placeholder="搜索商品名称" class="px-3 py-2 border rounded-md w-full max-w-xs">
+                    <button onclick="openAddModal()" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90">
+                        <i class="fa-solid fa-plus mr-1"></i> 新增商品
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                    <tr class="bg-gray-50 border-b">
+                        <th class="px-4 py-3 text-left text-sm font-semibold">ID</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold">商品名称</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold">分类</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold">价格</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold">库存</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="productTable">
+                    <tr>
+                        <td>1</td>
+                        <td>斜桥榨菜</td>
+                        <td>腌制食品</td>
+                        <td>¥12.00</td>
+                        <td>200</td>
+                        <td class="flex gap-2">
+                            <button onclick="openEditModal(1)" class="text-blue-600">编辑</button>
+                            <button onclick="deleteItem(1)" class="text-red-600">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 弹窗 -->
+<div id="modal" class="fixed inset-0 bg-black/50 hidden justify-center items-center z-50">
+    <div class="bg-white w-full max-w-lg p-6 rounded-xl">
+        <h3 id="modalTitle" class="text-lg font-bold mb-4">新增商品</h3>
+        <form id="productForm">
+            <input type="hidden" id="id">
+            <div class="mb-3"><label>商品名称</label><input id="name" class="w-full border p-2 rounded"></div>
+            <div class="mb-3"><label>分类</label><input id="category" class="w-full border p-2 rounded"></div>
+            <div class="mb-3"><label>价格</label><input id="price" class="w-full border p-2 rounded"></div>
+            <div class="mb-3"><label>库存</label><input id="stock" class="w-full border p-2 rounded"></div>
+            <div class="flex justify-end gap-2 mt-4">
+                <button onclick="closeModal()" type="button" class="px-3 py-2 border rounded">取消</button>
+                <button type="submit" class="px-3 py-2 bg-primary text-white rounded">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 底部 -->
+<footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-8 animate-fade-in">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
+        <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
+    </div>
+</footer>>
+<script>
+    let modal = document.getElementById("modal");
+    let isEdit = false;
+    function openAddModal(){ isEdit = false; document.getElementById("modalTitle").innerText="新增商品"; document.getElementById("productForm").reset(); modal.style.display="flex"; }
+    function openEditModal(id){ isEdit = true; document.getElementById("modalTitle").innerText="编辑商品"; document.getElementById("id").value=id; document.getElementById("name").value="斜桥榨菜"; document.getElementById("category").value="腌制食品"; document.getElementById("price").value="12.00"; document.getElementById("stock").value="200"; modal.style.display="flex"; }
+    function closeModal(){ modal.style.display="none"; }
+    function deleteItem(id){ if(confirm("确定删除？")){ alert("删除成功！"); } }
+    document.getElementById("productForm").addEventListener("submit",(e)=>{ e.preventDefault(); alert(isEdit ? "修改成功！" : "新增成功！"); closeModal(); });
+</script>
+</body>
+</html>

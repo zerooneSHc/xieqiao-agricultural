@@ -1,0 +1,31 @@
+# 服务器配置
+server:
+  port: 80  # 与启动类打印的端口一致，可灵活修改
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+# 数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xieqiao_agricultural?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root  # 替换为你的数据库账号
+    password: 123456  # 替换为你的数据库密码
+
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  # Mapper.xml文件路径
+  type-aliases-package: com.xieqiao.agricultural.entity
+  configuration:
+    map-underscore-to-camel-case: true  # 下划线转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 打印SQL日志
+
+# 日志配置
+logging:
+  level:
+    com.xieqiao.agricultural: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
