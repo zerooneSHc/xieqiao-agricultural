@@ -63,14 +63,8 @@
             <i class="fa-solid fa-leaf text-primary text-2xl"></i>
             <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
         </div>
-        <nav class="hidden md:flex items-center gap-6">
-            <span class="nav-active py-2 px-1 font-medium">首页</span>
-            <span class="py-2 px-1 font-medium text-gray-600">商品管理</span>
-            <span class="py-2 px-1 font-medium text-gray-600">农户管理</span>
-            <span class="py-2 px-1 font-medium text-gray-600">订单管理</span>
-        </nav>
 
-        <!-- 改为：登录 - 使用绝对路径 -->
+        <!-- 登录按钮 -->
         <div class="hidden md:flex">
             <a href="/xieqiao-agricultural/login.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
                 登录
@@ -83,17 +77,12 @@
     </div>
     <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
         <div class="container mx-auto px-4 py-2 flex flex-col gap-3">
-            <span class="py-2 text-primary">首页</span>
-            <span class="py-2 text-gray-600">商品管理</span>
-            <span class="py-2 text-gray-600">农户管理</span>
-            <span class="py-2 text-gray-600">订单管理</span>
-            <!-- 改为：登录 - 使用绝对路径 -->
             <a href="/xieqiao-agricultural/login.html" class="py-2 text-primary text-center border-t">登录</a>
         </div>
     </div>
 </header>
 
-<!-- Banner 带动画（已删除进入管理系统按钮） -->
+<!-- Banner 带动画 -->
 <section class="bg-neutral py-20 md:py-32">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
         <div class="md:w-1/2 space-y-6 animate-slide-right animate-delay-1">
@@ -105,7 +94,6 @@
                 让优质农产品从田间直达餐桌，助力乡村振兴。
             </p>
             <p class="text-primary font-medium text-lg">专业·高效·安全·便捷</p>
-            <!-- 已删除按钮 -->
         </div>
         <div class="md:w-1/2 animate-fade-in animate-delay-2">
             <img src="https://picsum.photos/id/132/900/600" alt="斜桥农产品展示" class="w-full h-auto rounded-xl shadow-lg hover:shadow-xl transition-shadow">
@@ -235,7 +223,7 @@
 </section>
 
 <!-- 底部 -->
-<footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-8 animate-fade-in">
+<footer class="bg-gray-800 text-white py-8 animate-fade-in">
     <div class="container mx-auto px-4 text-center text-gray-400">
         <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
         <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
@@ -245,12 +233,14 @@
 <script>
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        const icon = menuBtn.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-xmark');
-    });
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        });
+    }
 </script>
 </body>
 </html>
