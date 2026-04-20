@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 斜桥农产品供销系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',
+                        secondary: '#81C784',
+                        neutral: '#F5F5F5',
+                    },
+                    fontFamily: {
+                        sans: ['PingFang SC','Helvetica Neue','Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+            .login-container { min-height: calc(100vh - 186px); }
+            .animate-fade-in { animation: fadeIn 0.8s ease forwards; }
+            .animate-slide-up { animation: slideUp 0.7s ease forwards; }
+            .animate-delay-1 { animation-delay: 0.1s; }
+            .animate-delay-2 { animation-delay: 0.2s; }
+            .animate-delay-3 { animation-delay: 0.3s; }
+            .bg-breath { animation: breath 8s infinite ease-in-out; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes breath {
+            0% { background-size: 100%; }
+            50% { background-size: 105%; }
+            100% { background-size: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-white font-sans text-gray-800">
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+            <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+            <span class="py-2 px-1 font-medium text-gray-600">首页</span>
+            <span class="py-2 px-1 font-medium text-primary border-b-2 border-primary">登录</span>
+        </nav>
+        <div class="hidden md:flex">
+            <a href="index.html" class="px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary/5 transition-all">返回首页</a>
+        </div>
+        <button class="md:hidden text-gray-700 text-xl" id="menuBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- 带动画的登录区域 -->
+<section class="login-container relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://picsum.photos/id/132/1920/1080')] bg-center bg-cover bg-breath opacity-20"></div>
+    <div class="absolute inset-0 bg-white/90"></div>
+
+    <div class="container mx-auto px-4 h-full flex items-center justify-center relative z-10">
+        <div class="w-full max-w-md bg-white rounded-xl card-shadow p-8
+                    animate-slide-up animate-delay-1
+                    hover:shadow-lg transition-shadow duration-500">
+
+            <div class="text-center mb-8 animate-fade-in animate-delay-2">
+                <h2 class="text-2xl font-bold text-gray-900">账号登录</h2>
+                <p class="text-gray-500 mt-2">欢迎使用斜桥农产品供销管理系统</p>
+            </div>
+
+            <form id="loginForm" class="space-y-5 animate-fade-in animate-delay-3">
+                <div class="space-y-1">
+                    <label class="block text-sm font-medium text-gray-700">用户名</label>
+                    <input type="text" id="username"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg
+                                  transition-all duration-300
+                                  focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary focus:scale-[1.02]"
+                           placeholder="请输入用户名" required>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-sm font-medium text-gray-700">密码</label>
+                    <input type="password" id="password"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg
+                                  transition-all duration-300
+                                  focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary focus:scale-[1.02]"
+                           placeholder="请输入密码" required>
+                </div>
+
+                <button type="submit"
+                        class="w-full py-3 bg-primary text-white rounded-lg
+                               transition-all duration-300
+                               hover:bg-primary/90 hover:scale-[1.03] active:scale-[0.97] font-medium">
+                    登录系统
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- 底部 -->
+<footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-8 animate-fade-in">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
+        <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
+    </div>
+</footer>
+
+<script>
+    // 登录功能
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (username === 'admin' && password === '123') {
+            alert('登录成功！正在进入系统...');
+            window.location.href = "dashboard.html";
+        } else {
+            alert('用户名或密码错误！\n默认账号：admin\n默认密码：123');
+        }
+    });
+</script>
+</body>
+</html>
