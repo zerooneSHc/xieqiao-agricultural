@@ -222,7 +222,6 @@
                     </div>
                 </div>
             </div>
-            <!-- 已删除多余文字 -->
         </div>
     </div>
 </section>
@@ -257,35 +256,39 @@
     </div>
 </section>
 
-<!-- 特色农产品 -->
+<!-- 特色农产品（图片已更换为 image5 ~ image8） -->
 <section class="py-16 bg-neutral">
     <div class="container mx-auto px-4">
         <h3 class="text-3xl font-bold text-center mb-3 animate-fade-in">特色农产品</h3>
         <p class="text-gray-500 text-center mb-12 animate-fade-in animate-delay-1">斜桥本地优质农产品，天然种植，绿色健康</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- 斜桥生鲜 使用 image5.jpg -->
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-1">
-                <img src="./images/zacai.jpg" alt="斜桥榨菜" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=斜桥榨菜'">
+                <img src="./images/image5.jpg" alt="斜桥生鲜" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=斜桥生鲜'">
                 <div class="p-4 text-center">
-                    <h4 class="font-bold text-lg">斜桥榨菜</h4>
+                    <h4 class="font-bold text-lg">斜桥生鲜</h4>
                     <p class="text-gray-500 text-sm">传统工艺 · 香脆可口</p>
                 </div>
             </div>
+            <!-- 新鲜蔬菜 使用 image6.jpg -->
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-2">
-                <img src="./images/vegetables.jpg" alt="新鲜蔬菜" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=新鲜蔬菜'">
+                <img src="./images/image6.jpg" alt="新鲜蔬菜" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=新鲜蔬菜'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">新鲜蔬菜</h4>
                     <p class="text-gray-500 text-sm">绿色种植 · 当日采摘</p>
                 </div>
             </div>
+            <!-- 时令水果 使用 image7.jpg -->
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-3">
-                <img src="./images/fruits.jpg" alt="时令水果" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=时令水果'">
+                <img src="./images/image7.jpg" alt="时令水果" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=时令水果'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">时令水果</h4>
                     <p class="text-gray-500 text-sm">自然成熟 · 香甜多汁</p>
                 </div>
             </div>
+            <!-- 农特干货 使用 image8.jpg -->
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-4">
-                <img src="./images/dried.jpg" alt="农特干货" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=农特干货'">
+                <img src="./images/image8.jpg" alt="农特干货" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=农特干货'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">农特干货</h4>
                     <p class="text-gray-500 text-sm">手工制作 · 原汁原味</p>
@@ -371,7 +374,7 @@
         });
     }
 
-    // 无缝循环跑马灯 - 4张本地图片，速度80秒
+    // 无缝循环跑马灯 - 4张本地图片 (image1~image4)，速度80秒
     function initSeamlessMarquee() {
         const track = document.getElementById('marqueeTrack');
         if (!track) return;
@@ -423,7 +426,6 @@
         track.appendChild(originalGroup);
         track.appendChild(cloneGroup);
 
-        // 重置动画，速度 80 秒
         track.style.animation = 'none';
         track.offsetHeight;
         track.style.animation = 'seamlessMarquee 80s linear infinite';
@@ -438,7 +440,7 @@
             });
         }
 
-        console.log('跑马灯已启动 | 4张图片 | 速度: 80秒/循环');
+        console.log('跑马灯已启动 | 4张图片 (image1~image4) | 速度: 80秒/循环');
     }
 
     if (document.readyState === 'loading') {
