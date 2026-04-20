@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>斜桥农产品供销系统</title>
+    <title>斜桥农产品供销系统 | 本地图片跑马灯</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -29,7 +29,6 @@
             .product-img { object-fit: cover; transition: transform 0.3s; }
             .product-card:hover .product-img { transform: scale(1.05); }
 
-            /* 首页高级动画 */
             .animate-fade-in { animation: fadeIn 0.8s ease forwards; }
             .animate-slide-up { animation: slideUp 0.7s ease forwards; }
             .animate-slide-right { animation: slideRight 0.7s ease forwards; }
@@ -39,6 +38,76 @@
             .animate-delay-4 { animation-delay: 0.4s; }
             .hover-float { transition: transform 0.3s ease; }
             .hover-float:hover { transform: translateY(-5px); }
+
+            /* 无缝循环跑马灯 - 速度 80 秒 */
+            .marquee-container {
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+                border-radius: 0.75rem;
+            }
+
+            .marquee-track {
+                display: flex;
+                width: fit-content;
+                will-change: transform;
+                animation: seamlessMarquee 80s linear infinite;  /* 80秒循环 */
+            }
+
+            @keyframes seamlessMarquee {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+
+            .marquee-item {
+                flex-shrink: 0;
+                box-sizing: border-box;
+                border-radius: 0.75rem;
+                overflow: hidden;
+            }
+
+            .marquee-item img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                display: block;
+                border-radius: 0.75rem;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            }
+
+            @media (max-width: 768px) {
+                .marquee-item {
+                    width: 80vw;
+                }
+                .marquee-track {
+                    gap: 1.2rem;
+                }
+            }
+            @media (min-width: 768px) and (max-width: 1280px) {
+                .marquee-item {
+                    width: 460px;
+                }
+                .marquee-track {
+                    gap: 1.8rem;
+                }
+            }
+            @media (min-width: 1280px) {
+                .marquee-item {
+                    width: 520px;
+                }
+                .marquee-track {
+                    gap: 2rem;
+                }
+            }
+
+            .marquee-track {
+                gap: 2rem;
+                padding-right: 2rem;
+            }
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -53,6 +122,47 @@
             to { opacity: 1; transform: translateX(0); }
         }
     </style>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        .marquee-wrapper {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: linear-gradient(145deg, #fef9e6 0%, #fff6e8 100%);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+        }
+        .marquee-item img {
+            transition: transform 0.4s ease, filter 0.3s ease;
+            filter: brightness(1.02) contrast(1.02);
+        }
+        .marquee-item:hover img {
+            transform: scale(1.02);
+            filter: brightness(1.05);
+            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.2);
+        }
+        .marquee-container {
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .marquee-container::-webkit-scrollbar {
+            display: none;
+        }
+        .marquee-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @media (max-width: 640px) {
+            .marquee-track {
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body class="bg-white font-sans text-gray-800">
 
@@ -63,10 +173,15 @@
             <i class="fa-solid fa-leaf text-primary text-2xl"></i>
             <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
         </div>
+        <nav class="hidden md:flex items-center gap-6">
+            <span class="nav-active py-2 px-1 font-medium">首页</span>
+            <span class="py-2 px-1 font-medium text-gray-600">商品管理</span>
+            <span class="py-2 px-1 font-medium text-gray-600">农户管理</span>
+            <span class="py-2 px-1 font-medium text-gray-600">订单管理</span>
+        </nav>
 
-        <!-- 登录按钮 -->
         <div class="hidden md:flex">
-            <a href="/xieqiao-agricultural/login.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+            <a href="login.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
                 登录
             </a>
         </div>
@@ -77,12 +192,16 @@
     </div>
     <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
         <div class="container mx-auto px-4 py-2 flex flex-col gap-3">
-            <a href="/xieqiao-agricultural/login.html" class="py-2 text-primary text-center border-t">登录</a>
+            <span class="py-2 text-primary">首页</span>
+            <span class="py-2 text-gray-600">商品管理</span>
+            <span class="py-2 text-gray-600">农户管理</span>
+            <span class="py-2 text-gray-600">订单管理</span>
+            <a href="login.html" class="py-2 text-primary text-center border-t">登录</a>
         </div>
     </div>
 </header>
 
-<!-- Banner 带动画 -->
+<!-- Banner + 本地图片跑马灯（4张图片：image1~image4，速度80秒） -->
 <section class="bg-neutral py-20 md:py-32">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
         <div class="md:w-1/2 space-y-6 animate-slide-right animate-delay-1">
@@ -96,12 +215,19 @@
             <p class="text-primary font-medium text-lg">专业·高效·安全·便捷</p>
         </div>
         <div class="md:w-1/2 animate-fade-in animate-delay-2">
-            <img src="https://picsum.photos/id/132/900/600" alt="斜桥农产品展示" class="w-full h-auto rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="marquee-wrapper shadow-xl rounded-xl overflow-hidden">
+                <div class="marquee-container">
+                    <div class="marquee-track" id="marqueeTrack">
+                        <!-- 4张本地图片：image1.jpg ~ image4.jpg，请放在 images 文件夹下 -->
+                    </div>
+                </div>
+            </div>
+            <!-- 已删除多余文字 -->
         </div>
     </div>
 </section>
 
-<!-- 核心优势 带动画 -->
+<!-- 核心优势 -->
 <section class="py-16 bg-white">
     <div class="container mx-auto px-4 text-center">
         <h3 class="text-3xl font-bold mb-3 animate-fade-in">平台核心优势</h3>
@@ -131,35 +257,35 @@
     </div>
 </section>
 
-<!-- 特色农产品 带动画 -->
+<!-- 特色农产品 -->
 <section class="py-16 bg-neutral">
     <div class="container mx-auto px-4">
         <h3 class="text-3xl font-bold text-center mb-3 animate-fade-in">特色农产品</h3>
         <p class="text-gray-500 text-center mb-12 animate-fade-in animate-delay-1">斜桥本地优质农产品，天然种植，绿色健康</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-1">
-                <img src="https://picsum.photos/id/292/400/300" alt="榨菜" class="product-img w-full h-48">
+                <img src="./images/zacai.jpg" alt="斜桥榨菜" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=斜桥榨菜'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">斜桥榨菜</h4>
                     <p class="text-gray-500 text-sm">传统工艺 · 香脆可口</p>
                 </div>
             </div>
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-2">
-                <img src="https://picsum.photos/id/287/400/300" alt="蔬菜" class="product-img w-full h-48">
+                <img src="./images/vegetables.jpg" alt="新鲜蔬菜" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=新鲜蔬菜'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">新鲜蔬菜</h4>
                     <p class="text-gray-500 text-sm">绿色种植 · 当日采摘</p>
                 </div>
             </div>
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-3">
-                <img src="https://picsum.photos/id/306/400/300" alt="水果" class="product-img w-full h-48">
+                <img src="./images/fruits.jpg" alt="时令水果" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=时令水果'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">时令水果</h4>
                     <p class="text-gray-500 text-sm">自然成熟 · 香甜多汁</p>
                 </div>
             </div>
             <div class="bg-white rounded-xl overflow-hidden card-shadow product-card hover-float animate-slide-up animate-delay-4">
-                <img src="https://picsum.photos/id/326/400/300" alt="干货" class="product-img w-full h-48">
+                <img src="./images/dried.jpg" alt="农特干货" class="product-img w-full h-48" onerror="this.src='https://placehold.co/400x300?text=农特干货'">
                 <div class="p-4 text-center">
                     <h4 class="font-bold text-lg">农特干货</h4>
                     <p class="text-gray-500 text-sm">手工制作 · 原汁原味</p>
@@ -231,16 +357,108 @@
 </footer>
 
 <script>
+    // 移动端菜单交互
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     if (menuBtn && mobileMenu) {
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             const icon = menuBtn.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-xmark');
+            if (icon) {
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-xmark');
+            }
         });
     }
+
+    // 无缝循环跑马灯 - 4张本地图片，速度80秒
+    function initSeamlessMarquee() {
+        const track = document.getElementById('marqueeTrack');
+        if (!track) return;
+
+        const localImages = [
+            { url: "./images/image1.jpg", alt: "斜桥田园风光 1" },
+            { url: "./images/image2.jpg", alt: "斜桥田园风光 2" },
+            { url: "./images/image3.jpg", alt: "斜桥田园风光 3" },
+            { url: "./images/image4.jpg", alt: "斜桥田园风光 4" }
+        ];
+
+        const defaultPlaceholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='600' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='%236b7280' text-anchor='middle' dy='.3em'%3E斜桥田园风光%3C/text%3E%3C/svg%3E";
+
+        track.innerHTML = '';
+
+        const originalGroup = document.createDocumentFragment();
+        localImages.forEach(imgInfo => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'marquee-item';
+            const img = document.createElement('img');
+            img.src = imgInfo.url;
+            img.alt = imgInfo.alt;
+            img.loading = 'eager';
+            img.onerror = function() {
+                this.src = defaultPlaceholder;
+                this.alt = "图片未找到，请将 " + imgInfo.url + " 放入 images 文件夹";
+            };
+            img.classList.add('rounded-xl', 'shadow-md');
+            itemDiv.appendChild(img);
+            originalGroup.appendChild(itemDiv);
+        });
+
+        const cloneGroup = document.createDocumentFragment();
+        localImages.forEach(imgInfo => {
+            const cloneItem = document.createElement('div');
+            cloneItem.className = 'marquee-item';
+            const cloneImg = document.createElement('img');
+            cloneImg.src = imgInfo.url;
+            cloneImg.alt = imgInfo.alt;
+            cloneImg.onerror = function() {
+                this.src = defaultPlaceholder;
+                this.alt = "图片未找到，请将 " + imgInfo.url + " 放入 images 文件夹";
+            };
+            cloneImg.classList.add('rounded-xl', 'shadow-md');
+            cloneItem.appendChild(cloneImg);
+            cloneGroup.appendChild(cloneItem);
+        });
+
+        track.appendChild(originalGroup);
+        track.appendChild(cloneGroup);
+
+        // 重置动画，速度 80 秒
+        track.style.animation = 'none';
+        track.offsetHeight;
+        track.style.animation = 'seamlessMarquee 80s linear infinite';
+
+        const marqueeContainer = document.querySelector('.marquee-container');
+        if (marqueeContainer) {
+            marqueeContainer.addEventListener('mouseenter', () => {
+                track.style.animationPlayState = 'paused';
+            });
+            marqueeContainer.addEventListener('mouseleave', () => {
+                track.style.animationPlayState = 'running';
+            });
+        }
+
+        console.log('跑马灯已启动 | 4张图片 | 速度: 80秒/循环');
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSeamlessMarquee);
+    } else {
+        initSeamlessMarquee();
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            const trackElem = document.getElementById('marqueeTrack');
+            if (trackElem && trackElem.style.animationPlayState !== 'paused') {
+                if (getComputedStyle(trackElem).animationName !== 'seamlessMarquee') {
+                    trackElem.style.animation = 'seamlessMarquee 80s linear infinite';
+                }
+            }
+        }, 150);
+    });
 </script>
 </body>
 </html>
