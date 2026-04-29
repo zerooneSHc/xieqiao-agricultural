@@ -8,62 +8,306 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
-            theme: { extend: { colors: { primary: '#2E7D32' } } }
+            theme: {
+                extend: {
+                    colors: { primary: '#2E7D32' },
+                    fontFamily: { sans: ['system-ui', 'sans-serif'] }
+                }
+            }
         }
     </script>
+    <style>
+        * { transition: all 0.2s ease; }
+        body { background-color: #f8fafc; }
+    </style>
 </head>
-<body class="bg-neutral font-sans text-gray-800">
-<header class="sticky top-0 bg-white shadow-sm">
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<!-- 顶部导航 -->
+<header class="sticky top-0 bg-white shadow-sm z-40">
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-leaf text-primary text-2xl"></i>
             <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
         </div>
         <nav class="hidden md:flex items-center gap-6">
-            <a href="dashboard.html" class="py-2 px-1 text-gray-600 hover:text-primary">控制台</a>
-            <a href="product.html" class="py-2 px-1 text-primary border-b-2 border-primary">商品管理</a>
-            <a href="farmer.html" class="py-2 px-1 text-gray-600 hover:text-primary">农户管理</a>
-            <a href="order.html" class="py-2 px-1 text-gray-600 hover:text-primary">订单管理</a>
+            <a href="dashboard.html" class="py-2 px-1 text-gray-600 hover:text-primary font-medium">控制台</a>
+            <a href="product.html" class="py-2 px-1 text-primary border-b-2 border-primary font-medium">商品管理</a>
+            <a href="farmer.html" class="py-2 px-1 text-gray-600 hover:text-primary font-medium">农户管理</a>
+            <a href="order.html" class="py-2 px-1 text-gray-600 hover:text-primary font-medium">订单管理</a>
         </nav>
-        <a href="index.html" class="px-4 py-2 bg-primary/90 text-white rounded-md hover:bg-primary transition-colors">退出登录</a>
+        <a href="index.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 shadow-sm transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i>退出登录
+        </a>
     </div>
 </header>
 
-<section class="py-8">
+<!-- 主内容区 -->
+<section class="py-10">
     <div class="container mx-auto px-4">
-        <div class="bg-white rounded-xl shadow p-6">
+        <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <h2 class="text-xl font-bold">商品管理列表</h2>
+                <h2 class="font-bold text-2xl text-gray-800 flex items-center">
+                    <i class="fa-solid fa-boxes-stacked text-primary mr-2"></i>商品管理列表
+                </h2>
                 <div class="flex gap-3">
-                    <input id="searchInput" type="text" placeholder="搜索商品名称" class="px-3 py-2 border rounded-md w-full max-w-xs">
-                    <button onclick="openAddModal()" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90">
-                        <i class="fa-solid fa-plus mr-1"></i> 新增商品
+                    <input id="searchInput" type="text" placeholder="搜索商品名称"
+                           class="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none w-full max-w-xs">
+                    <button onclick="openAddModal()"
+                            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 shadow-sm flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> 新增商品
                     </button>
                 </div>
             </div>
 
-            <div class="overflow-x-auto">
+            <!-- 表格 -->
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
                 <table class="w-full border-collapse">
                     <thead>
-                    <tr class="bg-gray-50 border-b">
-                        <th class="px-4 py-3 text-left text-sm font-semibold">ID</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold">商品名称</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold">分类</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold">价格</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold">库存</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold">操作</th>
+                    <tr class="bg-gray-50 text-gray-700">
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">ID</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">商品名称</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">分类</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">价格</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">库存</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">操作</th>
                     </tr>
                     </thead>
-                    <tbody id="productTable">
-                    <tr>
-                        <td>1</td>
-                        <td>斜桥榨菜</td>
-                        <td>腌制食品</td>
-                        <td>¥12.00</td>
-                        <td>200</td>
-                        <td class="flex gap-2">
-                            <button onclick="openEditModal(1)" class="text-blue-600">编辑</button>
-                            <button onclick="deleteItem(1)" class="text-red-600">删除</button>
+                    <tbody id="productTable" class="divide-y divide-gray-100">
+                    <!-- 水果类 -->
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1</td>
+                        <td class="px-5 py-4 font-medium">水蜜桃</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥18.00</td>
+                        <td class="px-5 py-4">300</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(1)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(1)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">2</td>
+                        <td class="px-5 py-4 font-medium">翠冠梨</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥15.00</td>
+                        <td class="px-5 py-4">280</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(2)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(2)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">3</td>
+                        <td class="px-5 py-4 font-medium">油桃</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥12.00</td>
+                        <td class="px-5 py-4">350</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(3)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(3)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">4</td>
+                        <td class="px-5 py-4 font-medium">甜瓜</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥10.00</td>
+                        <td class="px-5 py-4">400</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(4)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(4)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">5</td>
+                        <td class="px-5 py-4 font-medium">金手指葡萄</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥25.00</td>
+                        <td class="px-5 py-4">220</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(5)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(5)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">6</td>
+                        <td class="px-5 py-4 font-medium">小西瓜</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥16.00</td>
+                        <td class="px-5 py-4">260</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(6)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(6)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">7</td>
+                        <td class="px-5 py-4 font-medium">草莓</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥30.00</td>
+                        <td class="px-5 py-4">180</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(7)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(7)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">8</td>
+                        <td class="px-5 py-4 font-medium">玉米</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm">水果类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥8.00</td>
+                        <td class="px-5 py-4">500</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(8)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(8)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+
+                    <!-- 农副类 -->
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">9</td>
+                        <td class="px-5 py-4 font-medium">草鸡蛋</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥25.00</td>
+                        <td class="px-5 py-4">600</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(9)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(9)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">10</td>
+                        <td class="px-5 py-4 font-medium">鹌鹑蛋</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥18.00</td>
+                        <td class="px-5 py-4">450</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(10)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(10)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">11</td>
+                        <td class="px-5 py-4 font-medium">鸭蛋</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥22.00</td>
+                        <td class="px-5 py-4">520</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(11)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(11)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">12</td>
+                        <td class="px-5 py-4 font-medium">香沙芋</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥14.00</td>
+                        <td class="px-5 py-4">380</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(12)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(12)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">13</td>
+                        <td class="px-5 py-4 font-medium">板栗南瓜</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥9.00</td>
+                        <td class="px-5 py-4">420</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(13)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(13)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">14</td>
+                        <td class="px-5 py-4 font-medium">大米系列</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥5.50</td>
+                        <td class="px-5 py-4">1000</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(14)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(14)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">15</td>
+                        <td class="px-5 py-4 font-medium">食用菌</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥13.00</td>
+                        <td class="px-5 py-4">320</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(15)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(15)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">16</td>
+                        <td class="px-5 py-4 font-medium">芦笋</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥20.00</td>
+                        <td class="px-5 py-4">290</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(16)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(16)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">17</td>
+                        <td class="px-5 py-4 font-medium">黑大麦子</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥11.00</td>
+                        <td class="px-5 py-4">360</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(17)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(17)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">18</td>
+                        <td class="px-5 py-4 font-medium">螃蟹</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-sm">农副类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥68.00</td>
+                        <td class="px-5 py-4">150</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(18)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(18)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+
+                    <!-- 零食类 -->
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">19</td>
+                        <td class="px-5 py-4 font-medium">脆饼</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">零食类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥15.00</td>
+                        <td class="px-5 py-4">480</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(19)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(19)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">20</td>
+                        <td class="px-5 py-4 font-medium">月饼</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">零食类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥38.00</td>
+                        <td class="px-5 py-4">210</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(20)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(20)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">21</td>
+                        <td class="px-5 py-4 font-medium">肉脯</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">零食类</span></td>
+                        <td class="px-5 py-4 text-primary font-semibold">¥42.00</td>
+                        <td class="px-5 py-4">240</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="openEditModal(21)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="deleteItem(21)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -74,38 +318,123 @@
 </section>
 
 <!-- 弹窗 -->
-<div id="modal" class="fixed inset-0 bg-black/50 hidden justify-center items-center z-50">
-    <div class="bg-white w-full max-w-lg p-6 rounded-xl">
-        <h3 id="modalTitle" class="text-lg font-bold mb-4">新增商品</h3>
+<div id="modal" class="fixed inset-0 bg-black/40 hidden justify-center items-center z-50 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-xl transform transition-all">
+        <h3 id="modalTitle" class="mb-5 font-bold text-xl text-gray-800">新增商品</h3>
         <form id="productForm">
             <input type="hidden" id="id">
-            <div class="mb-3"><label>商品名称</label><input id="name" class="w-full border p-2 rounded"></div>
-            <div class="mb-3"><label>分类</label><input id="category" class="w-full border p-2 rounded"></div>
-            <div class="mb-3"><label>价格</label><input id="price" class="w-full border p-2 rounded"></div>
-            <div class="mb-3"><label>库存</label><input id="stock" class="w-full border p-2 rounded"></div>
-            <div class="flex justify-end gap-2 mt-4">
-                <button onclick="closeModal()" type="button" class="px-3 py-2 border rounded">取消</button>
-                <button type="submit" class="px-3 py-2 bg-primary text-white rounded">保存</button>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">商品名称</label>
+                <input id="name" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">分类</label>
+                <input id="category" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">价格</label>
+                <input id="price" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">库存</label>
+                <input id="stock" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button onclick="closeModal()" type="button" class="border border-gray-200 px-4 py-2.5 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">取消</button>
+                <button type="submit" class="bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 shadow-sm font-medium">保存</button>
             </div>
         </form>
     </div>
 </div>
 
 <!-- 底部 -->
-<footer class="bg-gray-800 text-white py-8 animate-fade-in">
+<footer class="bg-gray-800 text-white py-8 mt-4">
     <div class="container mx-auto px-4 text-center text-gray-400">
         <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
         <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
     </div>
 </footer>
+
 <script>
+    // 商品完整数据
+    const products = [
+        { id: 1, name: '水蜜桃', category: '水果类', price: '18.00', stock: 300 },
+        { id: 2, name: '翠冠梨', category: '水果类', price: '15.00', stock: 280 },
+        { id: 3, name: '油桃', category: '水果类', price: '12.00', stock: 350 },
+        { id: 4, name: '甜瓜', category: '水果类', price: '10.00', stock: 400 },
+        { id: 5, name: '金手指葡萄', category: '水果类', price: '25.00', stock: 220 },
+        { id: 6, name: '小西瓜', category: '水果类', price: '16.00', stock: 260 },
+        { id: 7, name: '草莓', category: '水果类', price: '30.00', stock: 180 },
+        { id: 8, name: '玉米', category: '水果类', price: '8.00', stock: 500 },
+        { id: 9, name: '草鸡蛋', category: '农副类', price: '25.00', stock: 600 },
+        { id: 10, name: '鹌鹑蛋', category: '农副类', price: '18.00', stock: 450 },
+        { id: 11, name: '鸭蛋', category: '农副类', price: '22.00', stock: 520 },
+        { id: 12, name: '香沙芋', category: '农副类', price: '14.00', stock: 380 },
+        { id: 13, name: '板栗南瓜', category: '农副类', price: '9.00', stock: 420 },
+        { id: 14, name: '大米系列', category: '农副类', price: '5.50', stock: 1000 },
+        { id: 15, name: '食用菌', category: '农副类', price: '13.00', stock: 320 },
+        { id: 16, name: '芦笋', category: '农副类', price: '20.00', stock: 290 },
+        { id: 17, name: '黑大麦子', category: '农副类', price: '11.00', stock: 360 },
+        { id: 18, name: '螃蟹', category: '农副类', price: '68.00', stock: 150 },
+        { id: 19, name: '脆饼', category: '零食类', price: '15.00', stock: 480 },
+        { id: 20, name: '月饼', category: '零食类', price: '38.00', stock: 210 },
+        { id: 21, name: '肉脯', category: '零食类', price: '42.00', stock: 240 },
+    ];
+
     let modal = document.getElementById("modal");
     let isEdit = false;
-    function openAddModal(){ isEdit = false; document.getElementById("modalTitle").innerText="新增商品"; document.getElementById("productForm").reset(); modal.style.display="flex"; }
-    function openEditModal(id){ isEdit = true; document.getElementById("modalTitle").innerText="编辑商品"; document.getElementById("id").value=id; document.getElementById("name").value="斜桥榨菜"; document.getElementById("category").value="腌制食品"; document.getElementById("price").value="12.00"; document.getElementById("stock").value="200"; modal.style.display="flex"; }
-    function closeModal(){ modal.style.display="none"; }
-    function deleteItem(id){ if(confirm("确定删除？")){ alert("删除成功！"); } }
-    document.getElementById("productForm").addEventListener("submit",(e)=>{ e.preventDefault(); alert(isEdit ? "修改成功！" : "新增成功！"); closeModal(); });
+
+    // 打开新增
+    function openAddModal(){
+        isEdit = false;
+        document.getElementById("modalTitle").innerText="新增商品";
+        document.getElementById("productForm").reset();
+        modal.style.display="flex";
+    }
+
+    // 打开编辑
+    function openEditModal(id){
+        isEdit = true;
+        const item = products.find(p => p.id === id);
+        if(!item) return;
+
+        document.getElementById("modalTitle").innerText="编辑商品";
+        document.getElementById("id").value = item.id;
+        document.getElementById("name").value = item.name;
+        document.getElementById("category").value = item.category;
+        document.getElementById("price").value = item.price;
+        document.getElementById("stock").value = item.stock;
+        modal.style.display="flex";
+    }
+
+    // 关闭弹窗
+    function closeModal(){
+        modal.style.display="none";
+    }
+
+    // 删除商品
+    function deleteItem(id){
+        if(confirm("确定删除该商品吗？")){
+            alert("删除成功！");
+        }
+    }
+
+    // 搜索功能
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const key = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#productTable tr');
+        rows.forEach(row => {
+            const name = row.children[1].innerText.toLowerCase();
+            row.style.display = name.includes(key) ? '' : 'none';
+        });
+    });
+
+    // 提交表单
+    document.getElementById("productForm").addEventListener("submit",(e)=>{
+        e.preventDefault();
+        alert(isEdit ? "修改成功！" : "新增成功！");
+        closeModal();
+    });
 </script>
 </body>
 </html>

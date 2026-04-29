@@ -6,61 +6,274 @@
     <title>订单管理 - 斜桥农产品供销系统</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script> tailwind.config = { theme: { extend: { colors: { primary: '#2E7D32' } } } } </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#2E7D32' },
+                    fontFamily: { sans: ['system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { transition: all 0.2s ease; }
+        body { background-color: #f8fafc; }
+    </style>
 </head>
-<body class="bg-neutral font-sans">
-<header class="sticky top-0 bg-white shadow-sm">
+<body class="bg-gray-50 font-sans">
+
+<!-- 顶部导航 -->
+<header class="sticky top-0 bg-white shadow-sm z-40">
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-2"><i class="fa-solid fa-leaf text-primary text-2xl"></i><h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1></div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+            <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
+        </div>
         <nav class="hidden md:flex items-center gap-6">
-            <a href="dashboard.html" class="text-gray-600 hover:text-primary">控制台</a>
-            <a href="product.html" class="text-gray-600 hover:text-primary">商品管理</a>
-            <a href="farmer.html" class="text-gray-600 hover:text-primary">农户管理</a>
-            <a href="order.html" class="text-primary border-b-2 border-primary">订单管理</a>
+            <a href="dashboard.html" class="text-gray-600 hover:text-primary font-medium">控制台</a>
+            <a href="product.html" class="text-gray-600 hover:text-primary font-medium">商品管理</a>
+            <a href="farmer.html" class="text-gray-600 hover:text-primary font-medium">农户管理</a>
+            <a href="order.html" class="text-primary border-b-2 border-primary font-medium">订单管理</a>
         </nav>
-        <a href="index.html" class="px-4 py-2 bg-primary text-white rounded">退出登录</a>
+        <a href="index.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 shadow-sm transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i>退出登录
+        </a>
     </div>
 </header>
 
-<section class="py-8"><div class="container mx-auto px-4">
-    <div class="bg-white p-6 rounded-xl shadow">
-        <div class="flex justify-between mb-4"><h2 class="font-bold text-xl">订单管理</h2>
-            <button onclick="addOrder()" class="bg-primary text-white px-4 py-2 rounded">新增订单</button></div>
-        <table class="w-full border-t"><thead><tr class="bg-gray-50"><th class="p-2 text-left">订单号</th><th class="p-2 text-left">商品</th><th class="p-2 text-left">金额</th><th class="p-2 text-left">状态</th><th class="p-2 text-left">操作</th></tr></thead>
-            <tbody><tr><td>DD2025001</td><td>榨菜</td><td>¥1200</td><td class="text-green-600">已完成</td>
-                <td><button onclick="viewOrder(1)" class="text-blue-600 mr-2">查看</button><button onclick="delOrder(1)" class="text-red-600">删除</button></td></tr></tbody></table>
-    </div>
-</div></section>
+<!-- 主内容区 -->
+<section class="py-10">
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <h2 class="font-bold text-2xl text-gray-800 flex items-center">
+                    <i class="fa-solid fa-list-check text-primary mr-2"></i>订单管理
+                </h2>
+                <div class="flex gap-3">
+                    <input id="searchInput" type="text" placeholder="搜索订单号/商品名称"
+                           class="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none w-full max-w-xs">
+                    <button onclick="addOrder()"
+                            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 shadow-sm flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> 新增订单
+                    </button>
+                </div>
+            </div>
 
-<div id="oModal" class="fixed inset-0 bg-black/40 hidden justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-xl w-full max-w-lg">
-        <h3 id="oTitle" class="mb-3 font-bold">新增订单</h3>
-        <form id="oForm"><input type="hidden" id="oid">
-            <div class="mb-2"><input placeholder="订单号" id="ocode" class="w-full border p-2 rounded"></div>
-            <div class="mb-2"><input placeholder="商品名称" id="ogoods" class="w-full border p-2 rounded"></div>
-            <div class="mb-2"><input placeholder="金额" id="oprice" class="w-full border p-2 rounded"></div>
-            <div class="mb-2"><input placeholder="状态" id="ostatus" class="w-full border p-2 rounded"></div>
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" onclick="closeOModal()" class="border px-3 py-1 rounded">取消</button>
-                <button type="submit" class="bg-primary text-white px-3 py-1 rounded">保存</button>
+            <!-- 表格 -->
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
+                <table class="w-full border-collapse">
+                    <thead>
+                    <tr class="bg-gray-50 text-gray-700">
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">订单号</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">商品</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">金额</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">状态</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orderTable" class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025001</td>
+                        <td class="px-5 py-4 text-gray-800">斜桥榨菜</td>
+                        <td class="px-5 py-4 font-medium">¥1200.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">已完成</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025001')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025001')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025002</td>
+                        <td class="px-5 py-4 text-gray-800">水蜜桃</td>
+                        <td class="px-5 py-4 font-medium">¥1800.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">待发货</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025002')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025002')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025003</td>
+                        <td class="px-5 py-4 text-gray-800">翠冠梨</td>
+                        <td class="px-5 py-4 font-medium">¥1500.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">待发货</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025003')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025003')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025004</td>
+                        <td class="px-5 py-4 text-gray-800">草鸡蛋</td>
+                        <td class="px-5 py-4 font-medium">¥2500.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">待付款</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025004')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025004')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025005</td>
+                        <td class="px-5 py-4 text-gray-800">金手指葡萄</td>
+                        <td class="px-5 py-4 font-medium">¥2500.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">已完成</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025005')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025005')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025006</td>
+                        <td class="px-5 py-4 text-gray-800">香沙芋</td>
+                        <td class="px-5 py-4 font-medium">¥1400.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">已完成</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025006')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025006')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025007</td>
+                        <td class="px-5 py-4 text-gray-800">螃蟹</td>
+                        <td class="px-5 py-4 font-medium">¥6800.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">已发货</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025007')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025007')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025008</td>
+                        <td class="px-5 py-4 text-gray-800">肉脯</td>
+                        <td class="px-5 py-4 font-medium">¥4200.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">已发货</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025008')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025008')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025009</td>
+                        <td class="px-5 py-4 text-gray-800">大米系列</td>
+                        <td class="px-5 py-4 font-medium">¥5500.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">已完成</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025009')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025009')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-gray-800">DD2025010</td>
+                        <td class="px-5 py-4 text-gray-800">草莓</td>
+                        <td class="px-5 py-4 font-medium">¥3000.00</td>
+                        <td class="px-5 py-4"><span class="px-2.5 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">待付款</span></td>
+                        <td class="px-5 py-4">
+                            <button onclick="viewOrder('DD2025010')" class="text-blue-600 mr-3 hover:text-blue-800 font-medium">查看</button>
+                            <button onclick="delOrder('DD2025010')" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 弹窗 -->
+<div id="oModal" class="fixed inset-0 bg-black/40 hidden justify-center items-center z-50 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-xl transform transition-all">
+        <h3 id="oTitle" class="mb-5 font-bold text-xl text-gray-800">新增订单</h3>
+        <form id="oForm">
+            <input type="hidden" id="oid">
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">订单号</label>
+                <input placeholder="订单号" id="ocode" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">商品名称</label>
+                <input placeholder="商品名称" id="ogoods" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">金额</label>
+                <input placeholder="金额" id="oprice" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">状态</label>
+                <input placeholder="状态" id="ostatus" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" onclick="closeOModal()" class="border border-gray-200 px-4 py-2.5 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">取消</button>
+                <button type="submit" class="bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 shadow-sm font-medium">保存</button>
             </div>
         </form>
     </div>
 </div>
 
 <!-- 底部 -->
-<footer class="bg-gray-800 text-white py-8 animate-fade-in">
+<footer class="bg-gray-800 text-white py-8 mt-4">
     <div class="container mx-auto px-4 text-center text-gray-400">
         <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
         <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
     </div>
 </footer>
+
 <script>
-    function addOrder(){ document.getElementById("oTitle").innerText="新增订单"; document.getElementById("oForm").reset(); document.getElementById("oModal").style.display="flex"; }
-    function viewOrder(id){ document.getElementById("oTitle").innerText="查看订单"; document.getElementById("ocode").value="DD2025001"; document.getElementById("ogoods").value="榨菜"; document.getElementById("oprice").value="1200"; document.getElementById("ostatus").value="已完成"; document.getElementById("oModal").style.display="flex"; }
-    function closeOModal(){ document.getElementById("oModal").style.display="none"; }
-    function delOrder(id){ if(confirm("确定删除订单？"))alert("删除成功！"); }
-    document.getElementById("oForm").addEventListener("submit",e=>{e.preventDefault();alert("保存成功！");closeOModal();})
+    const orderList = [
+        { code: 'DD2025001', goods: '斜桥榨菜', price: '1200.00', status: '已完成' },
+        { code: 'DD2025002', goods: '水蜜桃', price: '1800.00', status: '待发货' },
+        { code: 'DD2025003', goods: '翠冠梨', price: '1500.00', status: '待发货' },
+        { code: 'DD2025004', goods: '草鸡蛋', price: '2500.00', status: '待付款' },
+        { code: 'DD2025005', goods: '金手指葡萄', price: '2500.00', status: '已完成' },
+        { code: 'DD2025006', goods: '香沙芋', price: '1400.00', status: '已完成' },
+        { code: 'DD2025007', goods: '螃蟹', price: '6800.00', status: '已发货' },
+        { code: 'DD2025008', goods: '肉脯', price: '4200.00', status: '已发货' },
+        { code: 'DD2025009', goods: '大米系列', price: '5500.00', status: '已完成' },
+        { code: 'DD2025010', goods: '草莓', price: '3000.00', status: '待付款' }
+    ];
+
+    function addOrder() {
+        document.getElementById("oTitle").innerText = "新增订单";
+        document.getElementById("oForm").reset();
+        document.getElementById("oModal").style.display = "flex";
+    }
+
+    function viewOrder(code) {
+        const order = orderList.find(item => item.code === code);
+        if (!order) return;
+        document.getElementById("oTitle").innerText = "查看订单";
+        document.getElementById("ocode").value = order.code;
+        document.getElementById("ogoods").value = order.goods;
+        document.getElementById("oprice").value = order.price;
+        document.getElementById("ostatus").value = order.status;
+        document.getElementById("oModal").style.display = "flex";
+    }
+
+    function closeOModal() {
+        document.getElementById("oModal").style.display = "none";
+    }
+
+    function delOrder(code) {
+        if (confirm("确定删除订单：" + code + " 吗？")) {
+            alert("订单删除成功！");
+        }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+        const key = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#orderTable tr');
+        rows.forEach(row => {
+            const code = row.children[0].innerText.toLowerCase();
+            const goods = row.children[1].innerText.toLowerCase();
+            row.style.display = (code.includes(key) || goods.includes(key)) ? '' : 'none';
+        });
+    });
+
+    document.getElementById("oForm").addEventListener("submit", e => {
+        e.preventDefault();
+        alert("保存成功！");
+        closeOModal();
+    });
 </script>
 </body>
 </html>

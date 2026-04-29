@@ -6,59 +6,256 @@
     <title>农户管理 - 斜桥农产品供销系统</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script> tailwind.config = { theme: { extend: { colors: { primary: '#2E7D32' } } } } </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#2E7D32' },
+                    fontFamily: { sans: ['system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { transition: all 0.2s ease; }
+        body { background-color: #f8fafc; }
+    </style>
 </head>
-<body class="bg-neutral font-sans">
-<header class="sticky top-0 bg-white shadow-sm">
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<!-- 顶部导航 -->
+<header class="sticky top-0 bg-white shadow-sm z-40">
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-2"><i class="fa-solid fa-leaf text-primary text-2xl"></i><h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1></div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+            <h1 class="text-xl font-bold text-primary">斜桥农产品供销系统</h1>
+        </div>
         <nav class="hidden md:flex items-center gap-6">
-            <a href="dashboard.html" class="text-gray-600 hover:text-primary">控制台</a>
-            <a href="product.html" class="text-gray-600 hover:text-primary">商品管理</a>
-            <a href="farmer.html" class="text-primary border-b-2 border-primary">农户管理</a>
-            <a href="order.html" class="text-gray-600 hover:text-primary">订单管理</a>
+            <a href="dashboard.html" class="py-2 px-1 text-gray-600 hover:text-primary font-medium">控制台</a>
+            <a href="product.html" class="py-2 px-1 text-gray-600 hover:text-primary font-medium">商品管理</a>
+            <a href="farmer.html" class="py-2 px-1 text-primary border-b-2 border-primary font-medium">农户管理</a>
+            <a href="order.html" class="py-2 px-1 text-gray-600 hover:text-primary font-medium">订单管理</a>
         </nav>
-        <a href="index.html" class="px-4 py-2 bg-primary text-white rounded">退出登录</a>
+        <a href="index.html" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 shadow-sm transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i>退出登录
+        </a>
     </div>
 </header>
 
-<section class="py-8"><div class="container mx-auto px-4">
-    <div class="bg-white p-6 rounded-xl shadow">
-        <div class="flex justify-between mb-4"><h2 class="font-bold text-xl">农户管理</h2>
-            <button onclick="addFarmer()" class="bg-primary text-white px-4 py-2 rounded">新增农户</button></div>
-        <table class="w-full border-t"><thead><tr class="bg-gray-50"><th class="p-2 text-left">ID</th><th class="p-2 text-left">姓名</th><th class="p-2 text-left">电话</th><th class="p-2 text-left">地址</th><th class="p-2 text-left">操作</th></tr></thead>
-            <tbody><tr><td>1001</td><td>张三</td><td>13800138000</td><td>斜桥镇</td>
-                <td><button onclick="editFarmer(1001)" class="text-blue-600 mr-2">编辑</button><button onclick="delFarmer(1001)" class="text-red-600">删除</button></td></tr></tbody></table>
-    </div>
-</div></section>
+<!-- 主内容区 -->
+<section class="py-10">
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <h2 class="font-bold text-2xl text-gray-800 flex items-center">
+                    <i class="fa-solid fa-people-group text-primary mr-2"></i>农户管理
+                </h2>
+                <div class="flex gap-3">
+                    <input id="searchInput" type="text" placeholder="搜索姓名/电话"
+                           class="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none w-full max-w-xs">
+                    <button onclick="addFarmer()"
+                            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 shadow-sm flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> 新增农户
+                    </button>
+                </div>
+            </div>
 
-<div id="fModal" class="fixed inset-0 bg-black/40 hidden justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-xl w-full max-w-lg">
-        <h3 id="fTitle" class="mb-3 font-bold">新增农户</h3>
-        <form id="fForm"><input type="hidden" id="fid">
-            <div class="mb-2"><input placeholder="姓名" id="fname" class="w-full border p-2 rounded"></div>
-            <div class="mb-2"><input placeholder="电话" id="ftel" class="w-full border p-2 rounded"></div>
-            <div class="mb-2"><input placeholder="地址" id="faddr" class="w-full border p-2 rounded"></div>
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" onclick="closeFModal()" class="border px-3 py-1 rounded">取消</button>
-                <button type="submit" class="bg-primary text-white px-3 py-1 rounded">保存</button>
+            <!-- 表格 -->
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
+                <table class="w-full border-collapse">
+                    <thead>
+                    <tr class="bg-gray-50 text-gray-700">
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">农户ID</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">农户姓名</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">联系电话</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">家庭住址</th>
+                        <th class="px-5 py-3.5 text-left text-sm font-semibold">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="farmerTable" class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1001</td>
+                        <td class="px-5 py-4 font-medium">张三</td>
+                        <td class="px-5 py-4">13800138000</td>
+                        <td class="px-5 py-4">靖江市斜桥镇红旗村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1001)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1001)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1002</td>
+                        <td class="px-5 py-4 font-medium">李四</td>
+                        <td class="px-5 py-4">13912345678</td>
+                        <td class="px-5 py-4">靖江市斜桥镇新华村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1002)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1002)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1003</td>
+                        <td class="px-5 py-4 font-medium">王五</td>
+                        <td class="px-5 py-4">13755667788</td>
+                        <td class="px-5 py-4">靖江市斜桥镇东阜村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1003)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1003)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1004</td>
+                        <td class="px-5 py-4 font-medium">赵六</td>
+                        <td class="px-5 py-4">13698765432</td>
+                        <td class="px-5 py-4">靖江市斜桥镇海圩村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1004)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1004)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1005</td>
+                        <td class="px-5 py-4 font-medium">刘七</td>
+                        <td class="px-5 py-4">13511223344</td>
+                        <td class="px-5 py-4">靖江市斜桥镇新木村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1005)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1005)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1006</td>
+                        <td class="px-5 py-4 font-medium">陈八</td>
+                        <td class="px-5 py-4">13433445566</td>
+                        <td class="px-5 py-4">靖江市斜桥镇荷花村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1006)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1006)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1007</td>
+                        <td class="px-5 py-4 font-medium">周九</td>
+                        <td class="px-5 py-4">13322114455</td>
+                        <td class="px-5 py-4">靖江市斜桥镇六助村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1007)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1007)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4">1008</td>
+                        <td class="px-5 py-4 font-medium">吴十</td>
+                        <td class="px-5 py-4">13255669988</td>
+                        <td class="px-5 py-4">靖江市斜桥镇富民村</td>
+                        <td class="px-5 py-4 flex gap-3">
+                            <button onclick="editFarmer(1007)" class="text-blue-600 hover:text-blue-800 font-medium">编辑</button>
+                            <button onclick="delFarmer(1007)" class="text-red-600 hover:text-red-800 font-medium">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 弹窗 -->
+<div id="fModal" class="fixed inset-0 bg-black/40 hidden justify-center items-center z-50 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-xl transform transition-all">
+        <h3 id="fTitle" class="mb-5 font-bold text-xl text-gray-800">新增农户</h3>
+        <form id="fForm">
+            <input type="hidden" id="fid">
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">农户姓名</label>
+                <input placeholder="请输入姓名" id="fname" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">联系电话</label>
+                <input placeholder="请输入电话" id="ftel" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1.5 font-medium">家庭住址</label>
+                <input placeholder="请输入地址" id="faddr" class="w-full border border-gray-200 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" onclick="closeFModal()" class="border border-gray-200 px-4 py-2.5 rounded-lg hover:bg-gray-50 text-gray-700 font-medium">取消</button>
+                <button type="submit" class="bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 shadow-sm font-medium">保存</button>
             </div>
         </form>
     </div>
 </div>
 
-<footer class="bg-gray-800 text-white py-8 animate-fade-in">
+<!-- 底部 -->
+<footer class="bg-gray-800 text-white py-8 mt-4">
     <div class="container mx-auto px-4 text-center text-gray-400">
         <p class="mb-2">© 2026斜桥农产品供销系统 版权所有</p>
         <p>产地直供 | 品质保障 | 数字化农业 | 一站式供销服务</p>
     </div>
 </footer>
+
 <script>
-    function addFarmer(){ document.getElementById("fTitle").innerText="新增农户"; document.getElementById("fForm").reset(); document.getElementById("fModal").style.display="flex"; }
-    function editFarmer(id){ document.getElementById("fTitle").innerText="编辑农户"; document.getElementById("fid").value=id; document.getElementById("fname").value="张三"; document.getElementById("ftel").value="13800138000"; document.getElementById("faddr").value="斜桥镇"; document.getElementById("fModal").style.display="flex"; }
-    function closeFModal(){ document.getElementById("fModal").style.display="none"; }
-    function delFarmer(id){ if(confirm("确定删除？"))alert("删除成功！"); }
-    document.getElementById("fForm").addEventListener("submit",e=>{e.preventDefault();alert("保存成功！");closeFModal();})
+    // 农户完整数据
+    const farmerList = [
+        { id: 1001, name: '张三', tel: '13800138000', addr: '靖江市斜桥镇红旗村' },
+        { id: 1002, name: '李四', tel: '13912345678', addr: '靖江市斜桥镇新华村' },
+        { id: 1003, name: '王五', tel: '13755667788', addr: '靖江市斜桥镇东阜村' },
+        { id: 1004, name: '赵六', tel: '13698765432', addr: '靖江市斜桥镇海圩村' },
+        { id: 1005, name: '刘七', tel: '13511223344', addr: '靖江市斜桥镇新木村' },
+        { id: 1006, name: '陈八', tel: '13433445566', addr: '靖江市斜桥镇荷花村' },
+        { id: 1007, name: '周九', tel: '13322114455', addr: '靖江市斜桥镇六助村' },
+        { id: 1008, name: '吴十', tel: '13255669988', addr: '靖江市斜桥镇富民村' }
+    ];
+
+    // 新增农户
+    function addFarmer() {
+        document.getElementById("fTitle").innerText = "新增农户";
+        document.getElementById("fForm").reset();
+        document.getElementById("fModal").style.display = "flex";
+    }
+
+    // 编辑农户
+    function editFarmer(id) {
+        const farmer = farmerList.find(item => item.id === id);
+        if (!farmer) return;
+
+        document.getElementById("fTitle").innerText = "编辑农户";
+        document.getElementById("fid").value = farmer.id;
+        document.getElementById("fname").value = farmer.name;
+        document.getElementById("ftel").value = farmer.tel;
+        document.getElementById("faddr").value = farmer.addr;
+        document.getElementById("fModal").style.display = "flex";
+    }
+
+    // 关闭弹窗
+    function closeFModal() {
+        document.getElementById("fModal").style.display = "none";
+    }
+
+    // 删除农户
+    function delFarmer(id) {
+        if (confirm("确定删除 ID：" + id + " 的农户信息吗？")) {
+            alert("删除成功！");
+        }
+    }
+
+    // 搜索功能
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+        const key = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#farmerTable tr');
+        rows.forEach(row => {
+            const name = row.children[1].innerText.toLowerCase();
+            const tel = row.children[2].innerText.toLowerCase();
+            row.style.display = (name.includes(key) || tel.includes(key)) ? '' : 'none';
+        });
+    });
+
+    // 表单提交
+    document.getElementById("fForm").addEventListener("submit", e => {
+        e.preventDefault();
+        alert("保存成功！");
+        closeFModal();
+    });
 </script>
 </body>
 </html>
